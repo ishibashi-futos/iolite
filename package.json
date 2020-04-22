@@ -1,12 +1,17 @@
 {
-  "name": "electron-quick-start-typescript",
+  "name": "iolite",
   "version": "1.0.0",
   "description": "A minimal Electron application written with Typescript",
+  "main": "dist/main.js",
   "scripts": {
     "build": "tsc",
     "watch": "tsc -w",
     "lint": "tslint -c tslint.json -p tsconfig.json",
-    "start": "npm run build && electron ./dist/main.js"
+    "start": "npm run build && electron ./dist/main.js",
+    "pack": "npm run build && npx electron-packager . --out build/",
+    "pack:mac": "npm run build && npx electron-packager . --out build/ --platform=darwin",
+    "pack:linux": "npm run build && npx electron-packager . --out build/ --platform=linux",
+    "pack:win": "npm run build && npx electron-packager . --out build/ --platform=win32"
   },
   "repository": "https://github.com/electron/electron-quick-start-typescript",
   "keywords": [
@@ -22,11 +27,18 @@
   "devDependencies": {
     "@types/ws": "^7.2.4",
     "electron": "^6.0.8",
+    "electron-packager": "^14.2.1",
     "tslint": "^5.19.0",
     "typescript": "^3.6.0"
   },
   "dependencies": {
     "electron-log": "^4.1.1",
     "ws": "^7.2.3"
+  },
+  "build": {
+    "files": [
+      "**/*",
+      "dist/**.js"
+    ]
   }
 }
