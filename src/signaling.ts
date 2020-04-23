@@ -5,7 +5,7 @@ import {PeerServer} from "peer";
 export default class Singaling {
   private server: Express.Express;
   constructor(port: number) {
-    this.server = PeerServer({port});
+    this.server = PeerServer({port, key: "iolite"});
     log.info(port);
     process.on("SIGTERM", this.close.bind(this));
     process.on("SIGINT", this.close.bind(this));

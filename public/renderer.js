@@ -23,6 +23,13 @@ const getDestinationPeerId = () => {
   return document.querySelector("#destPeerId").value;
 }
 
+const getPeerConnection = () => {
+  return {
+    host: document.querySelector("#remotePeerHost").value,
+    port: document.querySelector("#remotePeerPort").value
+  };
+}
+
 /**
  * PeerServerに新規接続する.
  */
@@ -30,7 +37,8 @@ const connect = () => {
   close();
   const peerId = String(Math.floor(Math.random() * 900) + 100);
   talks.peerId = peerId;
-  const peer = new Peer(peerId, {host: "localhost", port: 9000});
+  const dest = getPeerConnection();
+  const peer = new Peer(peerId, {host: dest.host, port: dest.port, key: "iolite"});
   talks.peer = peer;
   peer.on("open", (id) => {
     talks.srcId = id
