@@ -5,6 +5,7 @@ const talks = {
   srcId: "",
   peer: undefined,
   localStream: null,
+  remoteStreams: new Map()
 }
 window.onload = () => {
   const video = document.querySelector("#video");
@@ -47,11 +48,6 @@ const connect = () => {
   // 他の端末からの接続要求に対する処理
   const recieve = (call) => {
     call.answer(talks.localStream);
-    call.on("stream", (remoteStream) => {
-      const video = document.createElement("video");
-      video.srcObject = remoteStream;
-      document.querySelector("#remoteMedia").appendChild(video);
-    });
   }
   peer.on("call", recieve);
 }
@@ -72,19 +68,28 @@ const call = () => {
   const peer = talks.peer;
   const call = peer.call(getDestinationPeerId(), talks.localStream);
   call.on("stream", (remoteStream) => {
+    // 複数のremoteStreamが送られてきた場合、画面を複数出さないように変更
+    if (talks.remoteStreams.has(remoteStream.id)) return;
+    talks.remoteStreams.set(remoteStream.id, remoteStream);
+    const remote = document.createElement("div");
+    remote.id = remoteStream.id;
     const video = document.createElement("video");
+    remote.appendChild(video);
+    const removeButton = document.createElement("input");
+    removeButton.type = "button";
+    removeButton.value = "disconnect"
+    removeButton.onclick = () => {
+      removeRemoteStream(remoteStream.id);
+    }
+    remote.appendChild(removeButton);
     video.srcObject = remoteStream;
-    document.querySelector("#remoteMedia").appendChild(video);
+    document.querySelector("#remoteMedia").appendChild(remote);
+    video.play();
   });
 }
 
-const onSend = () => {
-  if (talks.peer === null) return;
-  // 他の端末に対する接続要求処理
-  const call = peer.call(getDestinationPeerId(), localStream);
-  call.on("stream", (remoteStream) => {
-    const video = document.createElement("video");
-    video.srcObject = remoteStream;
-    document.querySelector("#remoteMedia").appendChild(video);
-  });
+const removeRemoteStream = (id) => {
+  const targetElement = document.querySelector(`#${id}`);
+  targetElement.parentNode.removeChild(targetElement);
+  talks.remoteStreams.delete(id);
 }
