@@ -8,7 +8,7 @@
     "paths": {
       "*": ["node_modules/*"]
     },
-    "skipLibCheck": false,
+    "skipLibCheck": true,
     "esModuleInterop": true
   },
   "include": [
