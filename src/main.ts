@@ -1,8 +1,10 @@
-import { app, BrowserWindow } from "electron";
+import { app, BrowserWindow, remote } from "electron";
 import * as path from "path";
+import Signaling from "./signaling";
 
 class Iolite {
   private mainWindow: BrowserWindow | null = null;
+  private server: Signaling;
   constructor() {
     app.on("ready", this.createWindow.bind(this));
     app.on("window-all-closed", () => {
@@ -15,6 +17,7 @@ class Iolite {
         this.createWindow();
       }
     });
+    this.server = new Signaling(9000);
   }
 
   private createWindow(): void {
@@ -27,10 +30,8 @@ class Iolite {
     });
     this.mainWindow.loadFile(path.join(__dirname, "../public/index.html"));
     this.mainWindow.on("closed", () => {
+      this.server.close();
       this.mainWindow = null;
-    });
-    this.mainWindow.on("close", () => {
-      this.mainWindow.close();
     });
     this.mainWindow.webContents.openDevTools();
   }

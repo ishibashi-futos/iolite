@@ -14,6 +14,20 @@
 
     <!-- You can also require other files to run in this process -->
     <script src="./renderer.js"></script>
+    <div>
+      <label>remote peer host</label>
+      <input type="text" id="remotePeerHost" placeholder="remote peer server" value="localhost">
+      <input type="text" id="remotePeerPort" placeholder="remote peer server" value="9000">
+      <input type="button" value="connect" onclick="connect()">
+    </div>
+    <div>
+      <label>local peer id</label>
+      <input type="number" id="myPeerId" placeholder="my peer id">
+    </div>
+    <div>
+      <label>remote peer id</label>
+      <input type="number" id="destPeerId" placeholder="destination peer id">
+    </div>
     <video id='video' width="300" height="400" autoplay="1"></video>
     <div id="remoteMedia"></div>
   </body>
