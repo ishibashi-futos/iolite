@@ -46,7 +46,7 @@ const connect = () => {
   });
   // 他の端末からの接続要求に対する処理
   const recieve = (call) => {
-    call.answer(localStream);
+    call.answer(talks.localStream);
     call.on("stream", (remoteStream) => {
       const video = document.createElement("video");
       video.srcObject = remoteStream;
@@ -63,6 +63,19 @@ const close = () => {
   } catch(e) {
     console.log(e);
   }
+}
+
+const call = () => {
+  if (talks.peer === null) {
+    alert("peer connectionがありません.");
+  }
+  const peer = talks.peer;
+  const call = peer.call(getDestinationPeerId(), talks.localStream);
+  call.on("stream", (remoteStream) => {
+    const video = document.createElement("video");
+    video.srcObject = remoteStream;
+    document.querySelector("#remoteMedia").appendChild(video);
+  });
 }
 
 const onSend = () => {
