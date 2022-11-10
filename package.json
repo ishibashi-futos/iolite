@@ -27,7 +27,7 @@
   "devDependencies": {
     "@types/node": "^13.13.2",
     "@types/ws": "^7.2.4",
-    "electron": "^7.2.4",
+    "electron": "^18.3.7",
     "electron-packager": "^14.2.1",
     "peerjs": "^1.2.0",
     "tslint": "^5.19.0",
